@@ -1,7 +1,7 @@
 <template>
 
   <v-app width="auto">
-    <navbar></navbar>
+    
     <v-container class="my-5">
       <v-row>
         <v-col >
@@ -22,35 +22,30 @@
 
     <v-container class="my-5" >
     <v-layout wrap>
-      <v-flex  v-for="post in searchByTitle" :key="post.id"  >
+      <v-flex  v-for="post in searchPosts" :key="post.id"  >
         <v-card max-width="344" class="text-center ma-3" height="300px" color="grey lighten-3">
           <v-card-title >{{ post.title }}</v-card-title>
           <v-card-text>{{ post.body}}</v-card-text>
-          <v-btn color="orange lighten-2" text class="mx-3 mb-3" @click= "click(post)">
-          Learn More
-          </v-btn>
+           <nuxt-link :to='`/${post.id}`' class=" link purple--text" >Learn More</nuxt-link>
         </v-card>
         </v-flex>
     </v-layout>
     </v-container>
 
-     <v-footer>
-    <v-col class="text-center"> CopyRight </v-col>
-  </v-footer>
   </v-app>
 </template>
 
 
 <script>
 // import { mapGetters } from 'vuex'
-import Navbar from '../components/Navbar.vue'
+
 
   export default{
     name: 'app',
     data(){
       return{
         search: '',
-        searchId:1,
+        searchId:'',
         posts:[],
       }
     },
@@ -59,24 +54,35 @@ import Navbar from '../components/Navbar.vue'
       return this.Service();
     },
 
-    components: {
-      Navbar
-    },
+    
     computed:{
       // getData(){
       //   return this.$store.getters.getData
       // ...mapGetters(['getData','getPostByTitle']),
-      searchByTitle() {
-        return this.posts.filter((post) =>{
-          return post.title.includes(this.search) &&  post.userId===Number(this.searchId)
-        })
+     searchPosts(){
+        let posts = this.posts
+        if(this.search){
+          posts = this.searchByTitle()
+        }
       
-        // return this.posts.filter(post => post.userId === Number(this.searchId))
-      }
+        
+        if(this.searchId){
+          posts = this.searchById()
+        }
+        return posts
+     }
     },
     methods:{
-      click(post){
-        this.$router.push({path :`/${post.id}`})
+        searchByTitle(){
+           return this.posts.filter((post) =>{
+          return post.title.includes(this.search)
+        })
+      },
+      searchById(){
+        
+        return this.posts.filter(post => post.userId === Number(this.searchId))
+        
+        
       },
       Service(){
         return this.$axios.$get('https://jsonplaceholder.typicode.com/posts')
@@ -90,3 +96,9 @@ import Navbar from '../components/Navbar.vue'
     }
   
 </script>
+<style>
+.link{
+  text-decoration: none
+  
+}
+</style>
