@@ -41,7 +41,9 @@
         <Nuxt />
       </v-container>
     </v-main>
-
+    <v-footer>
+          <v-col class="text-center"> CopyRight </v-col>
+          </v-footer>
   </v-app>
   
 </template>
