@@ -7,8 +7,8 @@
         <v-layout>
         <v-flex>
         <v-card max-width="344" class="text-center mx-auto my-12" height="300px" color="grey lighten-3">
-          <v-card-title >{{ getPost.title }}</v-card-title>
-          <v-card-text>{{ getPost.body}}</v-card-text>
+          <v-card-title >{{ getData.title }}</v-card-title>
+          <v-card-text>{{ getData.body}}</v-card-text>
         </v-card>
         </v-flex>
         </v-layout>
@@ -38,10 +38,10 @@ export default{
     layout: 'navbar-comment',
     fetch(){
          this.$store.dispatch('fetchComments' , this.id)
-         this.$store.dispatch('fetchPost' , this.id)
+         this.$store.dispatch('fetchData' , this.id)
     },
     computed:{
-        ...mapGetters(['getComments' , 'getPost'])
+        ...mapGetters(['getComments' , 'getData'])
     },
 }
 </script>

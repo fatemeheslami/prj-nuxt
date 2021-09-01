@@ -34,20 +34,25 @@ export const mutations = {
 }
 
 export const actions = {
-    fetchData({commit}){
-        return this.$axios.$get('https://jsonplaceholder.typicode.com/posts' 
-       
-        )
-        .then((response) =>{
-            
-            commit('SET_DATA' , response)
-            
-            
-            
-        }).catch(() =>{
-            console.log('error')
-        })
+    fetchData({commit} , id){
+        if(id){
+            return this.$axios.$get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+            .then((response) => {
+                commit('SET_DATA' , response)
+            }).catch(()=> {
+                console.log('error')
+            })
+        }
+        else{
+            return this.$axios.$get('https://jsonplaceholder.typicode.com/posts')
+            .then((response) => {
+                commit('SET_DATA' , response)
+            }).catch(() => {
+                console.log('error')
+            })
+        }
     },
+  
     fetchComments({commit} , id){
         return this.$axios.$get(`https://jsonplaceholder.typicode.com/comments?postId=${id}`
             
@@ -58,13 +63,5 @@ export const actions = {
             console.log('error')
         })
     },
-    fetchPost({commit} , id){
-        return this.$axios.$get(`https://jsonplaceholder.typicode.com/posts/${id}`)
-        .then((response) => {
-            commit('SET_POST' , response)
-            console.log(response)
-        }).catch(() =>{
-            console.log('error')
-        })
-    }
+   
 }
